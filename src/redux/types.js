@@ -7,3 +7,5 @@ export const MINUS = "MINUS"
 export const RESULT = "RESULT"
 export const TITLE = "TITLE"
 export const CHANGE = "CHANGE"
+
+export const SEND_VALUE = "SEND-VALUE"

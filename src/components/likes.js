@@ -2,6 +2,7 @@ import React from "react"
 import img from "./likePhoto.png"
 import { connect } from "react-redux"
 import { CLICK, DISLIKE } from "../redux/types"
+import { dislikesActionCreator, likesActionCreator } from "../redux/LikesActionCreator/likesActionCreators"
 
 const Likes = (props) => {
     console.log("Likes components props : ", props)
@@ -16,10 +17,11 @@ const Likes = (props) => {
 
 
 let mapStateToProps = (state) => {
+    const likesPage = state.LikesPage
     console.log("mapStatetoprops : ", state)
     return {
-        likes: state.likes,
-        dislike: state.dislike,
+        likes: likesPage.likes,
+        dislike: likesPage.dislike,
     }
 }
 
@@ -27,13 +29,15 @@ let mapDispatchToProps = (dispatch) => {
     return {
         onClickFn: () => {
             console.log("click")
-            const action = { type: CLICK }
-            dispatch(action)
+            dispatch(likesActionCreator())
+            // const action = { type: CLICK }
+            // dispatch(action)
         },
         DislikeClick: () => {
             console.log("dis click")
-            const action = { type: DISLIKE }
-            dispatch(action)
+            dispatch(dislikesActionCreator())
+            // const action = { type: DISLIKE }
+            // dispatch(action)
         }
     }
 }

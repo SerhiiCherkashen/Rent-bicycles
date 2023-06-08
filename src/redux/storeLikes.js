@@ -7,7 +7,7 @@ import { likeReducer } from "../reducers/LIkesReducer/likeReducer"
 //     likes: 0,
 //     dislike: 0,
 // }
-
+// 
 // let reducer = (state = initialState, action) => {
 //     console.log("reducer state  : ", state)
 //     console.log("reducer action  : ", action)
@@ -20,11 +20,11 @@ import { likeReducer } from "../reducers/LIkesReducer/likeReducer"
 //     }
 // }
 
+let a = 9
 // let store = combineReducers(rootReducer)
 
-let store = createStore(likeReducer)
+// export const store = createStore(likeReducer)
 
-export default store
 
 
 

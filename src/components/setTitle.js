@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setTitle, changeValue } from "../redux/storeTest"
+import { setTitle, changeValue } from "../redux/storeTitle"
 
 
 const SetTitleA = (props) => {
@@ -38,9 +38,13 @@ const SetTitleA = (props) => {
 }
 
 const mapStateToProps = (state) => {
+    let titlePage = state.TitlePage
+    // console.log("Tile mapStateToProps state :", state)
+    // console.log("Tile mapStateToProps state.likes :", state.likes)
+    // console.log("Tile mapStateToProps state.likes.likes :", state.likes.likes)
     return {
-        title: state.title,
-        value: state.value
+        title: titlePage.title,
+        value: titlePage.value,
     }
 }
 

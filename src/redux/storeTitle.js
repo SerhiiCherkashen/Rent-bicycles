@@ -25,9 +25,9 @@ import { titleReducer } from "../reducers/TitleReducer/titleReducer"
 //     }
 // })
 
-export const storeTitle = createStore(titleReducer)
+// export const storeTitle = createStore(titleReducer)
 
-window.store = storeTitle
+// window.store = storeTitle
 // export default store
 
 export const setTitle = (word) => ({
