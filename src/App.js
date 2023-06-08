@@ -8,12 +8,13 @@ import Bicycle from './components/bicycles';
 import SetTitle from './components/setTitle';
 import Likes from './components/likes';
 import store from './redux/storeLikes';
+import { storeTitle } from './redux/storeTest';
 
 function App(props) {
   return (
     <div className="App">
-      {/* < SetTitle />
-      <Bicycle /> */}
+      < SetTitle store={storeTitle} />
+      {/* <Bicycle /> */}
       <Likes store={store} />
       {/* store={store} */}
     </div >

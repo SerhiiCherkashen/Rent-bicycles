@@ -14,6 +14,7 @@ const Likes = (props) => {
     </div>
 }
 
+
 let mapStateToProps = (state) => {
     console.log("mapStatetoprops : ", state)
     return {
