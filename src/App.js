@@ -6,12 +6,16 @@ import { createStore } from 'redux';
 import { connect } from 'react-redux';
 import Bicycle from './components/bicycles';
 import SetTitle from './components/setTitle';
+import Likes from './components/likes';
+import store from './redux/storeLikes';
 
 function App(props) {
   return (
     <div className="App">
-      < SetTitle />
-      <Bicycle />
+      {/* < SetTitle />
+      <Bicycle /> */}
+      <Likes store={store} />
+      {/* store={store} */}
     </div >
   );
 }

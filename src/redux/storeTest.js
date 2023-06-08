@@ -1,11 +1,7 @@
 
 import { createStore } from "redux"
+import { CHANGE, TITLE } from "./types"
 
-// const PLUS = "PLUS"
-// const MINUS = "MINUS"
-// const RESULT = "RESULT"
-const TITLE = "TITLE"
-const CHANGE = "CHANGE"
 
 let initialState = {
     title: "Google.hub",
