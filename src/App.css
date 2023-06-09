@@ -31,6 +31,7 @@ img {
 .likeWrapper {
   background: rgb(235, 224, 81);
   padding: 30px;
+  margin-top: 20px;
 }
 .inputWrapper {
   background-color: rgb(99, 187, 106);

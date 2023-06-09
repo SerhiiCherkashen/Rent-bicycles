@@ -20,7 +20,7 @@ function App(props) {
       {/* <Bicycle /> */}
       <Bike />
       {/* <Input /> */}
-      <Likes />
+      {/* <Likes /> */}
       <Schetchic />
     </div >
   );

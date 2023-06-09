@@ -1,16 +1,21 @@
-import { getByLabelText } from "@testing-library/react";
-import { CLICK_SELECTOR, SUBMIT_CLICK } from "../../redux/types"
+import { SELECTOR_CLICK, SUBMIT_CLICK } from "../../redux/types"
 
 
 let initialState = {
     now: "nichego",
     currentBike: "",
+    value: 0,
+    selectValue: "",
+    nameBike: "",
+    priceBike: "",
+    selectClick: "",
+    two: "dwa",
     Road: {
         id: 1,
         name: "Road Bike",
         price: 10
     },
-    Mountain: {
+    mountain: {
         id: 2,
         name: "Mountain Bike",
         price: 20
@@ -79,7 +84,53 @@ let initialState = {
 //     default:   }
 
 export const bikeReducer = (state = initialState, action) => {
-    return state
+    switch (action.type) {
+        case SUBMIT_CLICK:
+            return { ...state, value: state.value + 1 }
+        case SELECTOR_CLICK:
+            let select = document.getElementById("select");
+            let getValue = select.value;
+
+            let arrayState = Object.keys(state)
+            console.log("arrayState : ", arrayState)
+
+            for (let i = 0; i < arrayState.length; i++) {
+                if (getValue === arrayState[i]) {
+                    console.log("  state initial   ", state)
+                    console.log("  arrayState[i]  ", arrayState[i])
+                    console.log("    state.arrayState[i].name  ", state.arrayState[i].name)
+                    return { ...state, nameBike: state.arrayState[i].name }
+                }
+
+            }
+        // arrayState.forEach(el => {
+        //     // console.log("arrayState : ", el, getValue, el === getValue)
+        //     // console.log("arrayState  state.el: ", state.el)
+        //     if (el === getValue) {
+        //         // let nazva = el
+        //         // console.log(" nazva : ", nazva)
+        //         // console.log("arrayState  state.nazva: ", state.nazva)
+        //         // console.log(" element : ", state)
+        //         // console.log(" element : ", el)
+        //         // console.log(" element : ", typeof el)
+        //         // console.log(" element : ", Number(el))
+        //         // console.log(" element : ", typeof Number(el))
+        //         // console.log(" nameBike 'Road': ", state.Mountain)
+        //         // console.log(" nameBike Road: ", state.Road)
+        //         // console.log(" nameBike Road.name : ", state.Road.name)
+        //         // console.log(" nameBike state: ", state)
+        //         // console.log(" nameBike getValue: ", state.getValue)
+        //         // console.log(" nameBike getValue: ", state.getValue)
+        //         // console.log(" nameBike el: ", state.el)
+        //         // let imia = initialState.el.name
+        //         return {
+        //             ...state, selectClick: el
+        //         }
+        //     }
+        // })
+        // return { ...state, selectValue: getValue }
+        default: return state
+    }
     // switch (action.type) {
     //     case SUBMIT_CLICK:
     //         return { ...state }
@@ -95,7 +146,15 @@ export const bikeReducer = (state = initialState, action) => {
 }
 
 
+// let obj2 = {
+//     name: "ivan",
+//     id: 3,
+//     ves: "50kg",
+// }
 
+// let masivObj = Object.keys(obj2)
+
+// masivObj.forEach
 
 
 

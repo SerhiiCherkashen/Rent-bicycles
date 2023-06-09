@@ -1,5 +1,6 @@
-import React from "react"
-import { connect } from "react-redux"
+import React from "react";
+import { connect } from "react-redux";
+import { selectorAC, submitAC } from "../redux/BikeActionCreator/bikeActionCreator";
 
 
 let bikeArray = [
@@ -8,71 +9,66 @@ let bikeArray = [
 ]
 
 const Bike = (props) => {
-
-
-    <div>
+    return <div>
         <div className='bike'>
             <div className='bikeName q'>
                 <span>Bike name</span>
-                <input value={"Your bike"} />
+                <input value={props.nameBike} />
             </div>
 
             <div className='bikeType q'>
                 <span>Bike type</span>
-                <select id="select">
-                    {/* onChange={props.clickSelector}  */}
-
-                    {bikeArray.map((item) => {
-                        return <option value={item}>{item}</option>
+                <select onClick={props.clickSelect} id="select">
+                    {bikeArray.map((item, index) => {
+                        return <option value={String(item)}>{item}</option>
                     })}
                 </select>
             </div>
 
             <div className='bikePrice q'>
                 <span>Price($)</span>
-                <input value={10} />
+                <input value={props.priceBike} />
             </div>
 
             <div className='select q'>
-                <button  >Submit</button>
-                {/* onClick={props.clickSubmit} */}
+                <button onClick={props.clickSubmit} >Submit</button>
 
             </div>
         </div>
-
+        {/* <span>{props.now}</span> */}
+        <span>   {props.selectValue}</span>
+        <p> nazva : {props.selectClick}</p>
         <p>You have "props.now" rented bike . Yor rent (Total : $0)</p>
         <p>You have no rented bicycles</p>
         <p>Available bicycles (0)</p>
         <p> There are no available bicycles</p>
+
     </div>
 }
-
-
-
 let mapStateToProps = (state) => {
-    let bike = state.BikePage
+    let page = state.BikePage
     return {
-        name: bike.name,
-        price: bike.price,
-        now: bike.now,
+        now: page.now,
+        value: page.value,
+        selectValue: page.selectValue,
+        nameBike: page.nameBike,
+        priceBike: page.priceBike,
+        selectClick: page.selectClick,
     }
-
+}
+let mapDispatchToProps = (dispatch) => {
+    return {
+        clickSubmit: () => {
+            dispatch(submitAC())
+        },
+        clickSelect: () => {
+            dispatch(selectorAC())
+        }
+    }
 }
 
-// let mapDispatchToProps = (dispatch) => {
-//     return {
-//         // clickSelector: () => {
-//         //     dispatch(selectorAC())
-//         // },
-//         clickSubmit: () => {
-//             // dispatch(submitAC())
-//             const action = { type: SUBMIT_CLICK }
-//             dispatch(action)
-//         }
-//     }
-// }
 
-export default connect(mapStateToProps, null)(Bike)
+export default connect(mapStateToProps, mapDispatchToProps)(Bike)
 
 
 
@@ -84,43 +80,8 @@ export default connect(mapStateToProps, null)(Bike)
 
 
 
-/* let clickBike = (e) => {*/
-/*     // console.log("e", e)*/
-/*     console.log("You choose Mauntain bike")*/
-/*     var select = document.getElementById("select");*/
-/*     var value = select.value;*/
-/*     console.log("e", value)*/
-/* }*/
-
-
-
-{/* <select>
-        <option>hyi / 2</option>
-        <option>A</option>
-        <option>b</option>
-        <option>c</option>
-      </select> */}
-{/*  */ }
-{/*  */ }
-{/*  */ }
 
 
 
 
 
-
-
-
-
-
-{/* <option value={"1"} >Mountain Bike</option>
-                        <option value={"2"}>Road Bike</option>
-                        <option value={"3"}>Touring Bike</option>
-                        <option value={"4"} >Folding Bike</option>
-                        <option value={"5"}>Fixed Gear/ Track Bike</option>
-                        <option value={"6"}>BMX </option>
-                        <option value={"7"}>Recumbent Bike </option>
-                        <option value={"8"}> Cruiser </option>
-                        <option value={"9"}>Hybrid Bike </option>
-                        <option value={"10"}>Cyclocross Bike </option>
-                        <option value={"11"}>Electric Bike </option> */}

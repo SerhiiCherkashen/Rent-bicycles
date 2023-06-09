@@ -7,8 +7,10 @@ import { schetchikMinusAC, schetchikPlusAC } from "../redux/SchetchikActionCreat
 const Schetchic = (props) => {
     return <div className="schetchikWrapper" >
         <h4>{props.name}</h4>
-        <p>{props.hello}</p>
-        {props.total}<input value={props.value} />
+        <p>
+            <span>{props.hello}</span> <span>Click : {props.total} </span>
+        </p>
+        <input value={props.value} />
         <button onClick={props.clickPlus} >+</button>
         <button onClick={props.clickMinus} >-</button>
     </div>
