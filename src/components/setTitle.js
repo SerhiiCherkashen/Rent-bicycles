@@ -6,18 +6,10 @@ import { setTitle, changeValue } from "../redux/storeTitle"
 const SetTitleA = (props) => {
 
     let clickFN = () => {
-        // console.log("Hello World!!!")
         props.setTitle()
     }
-    // let clickFN = () => {
-    //   console.log("Hello World!!!")
-    //   let add = document.createElement("h1")
-    //   add.textContent = "Hello World!!!"
-    //   document.body.append(add)
-    // }
 
     let fnChange = (e) => {
-        console.log("e : ", e.target.value)
         props.changeValue(e.target.value)
     }
 
@@ -39,9 +31,6 @@ const SetTitleA = (props) => {
 
 const mapStateToProps = (state) => {
     let titlePage = state.TitlePage
-    // console.log("Tile mapStateToProps state :", state)
-    // console.log("Tile mapStateToProps state.likes :", state.likes)
-    // console.log("Tile mapStateToProps state.likes.likes :", state.likes.likes)
     return {
         title: titlePage.title,
         value: titlePage.value,
@@ -60,6 +49,12 @@ export default connect(mapStateToProps, { setTitle, changeValue })(SetTitleA);
 
 
 
+    // let clickFN = () => {
+    //   console.log("Hello World!!!")
+    //   let add = document.createElement("h1")
+    //   add.textContent = "Hello World!!!"
+    //   document.body.append(add)
+    // }
 
 
 

@@ -10,16 +10,18 @@ import Likes from './components/likes';
 import store from './redux/storeLikes';
 import { storeTitle } from './redux/storeTitle';
 import Input from './components/input';
+import Bike from './components/bike';
+import Schetchic from './components/schetchik';
 
 function App(props) {
   return (
     <div className="App">
       < SetTitle />
-      {/* store={storeTitle} */}
       {/* <Bicycle /> */}
-      <Input />
+      <Bike />
+      {/* <Input /> */}
       <Likes />
-      {/* store={store} */}
+      <Schetchic />
     </div >
   );
 }

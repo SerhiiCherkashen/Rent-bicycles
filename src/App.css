@@ -36,3 +36,8 @@ img {
   background-color: rgb(99, 187, 106);
   padding: 30px;
 }
+.schetchikWrapper {
+  background-color: pink;
+  padding: 20px;
+  margin-top: 20px;
+}

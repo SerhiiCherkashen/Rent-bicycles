@@ -1,11 +1,47 @@
 import React from "react"
 import img from "./likePhoto.png"
 import { connect } from "react-redux"
-import { CLICK, DISLIKE } from "../redux/types"
 import { dislikesActionCreator, likesActionCreator } from "../redux/LikesActionCreator/likesActionCreators"
 
+// const Road = "Road"
+// const Mountain = "Mountain"
+// const Touring = "Touring"
+// const Folding = "Folding"
+// const Fixed = "Fixed"
+// const BMX = "BMX"
+// const Recumbent = "Recumbent"
+// const Cruiser = "Cruiser"
+// const Hybrid = "Hybrid"
+// const Cycle = "Cycle"
+// const Electric = "Electric"
+
+
+// let bikeArray = [
+//     "Road", "Mountain", "Touring", "Folding", "Fixed", "BMX",
+//     "Recumbent", "Cruiser", "Hybrid", "Cycle", "Electric",
+// ]
+
+// let obj = {}
+// obj.lalala = "NEW VALUE"
+
+// console.log("bikeArray : ", bikeArray)
+
+// let objBike = bikeArray.map((item, index) => {
+//     let name = item
+//     obj.name = {
+//         id: index,
+//         nazva: item,
+//     }
+//     console.log("new obj : ", obj, "   item  ", item,)
+// })
+
+// console.log("objBike : ", objBike)
+// console.log("new obj : ", obj)
+
+
+
+
 const Likes = (props) => {
-    console.log("Likes components props : ", props)
     return <div className="likeWrapper" >
         <img src={img} />
         <div>
@@ -18,7 +54,6 @@ const Likes = (props) => {
 
 let mapStateToProps = (state) => {
     const likesPage = state.LikesPage
-    console.log("mapStatetoprops : ", state)
     return {
         likes: likesPage.likes,
         dislike: likesPage.dislike,
@@ -28,13 +63,11 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
     return {
         onClickFn: () => {
-            console.log("click")
             dispatch(likesActionCreator())
             // const action = { type: CLICK }
             // dispatch(action)
         },
         DislikeClick: () => {
-            console.log("dis click")
             dispatch(dislikesActionCreator())
             // const action = { type: DISLIKE }
             // dispatch(action)

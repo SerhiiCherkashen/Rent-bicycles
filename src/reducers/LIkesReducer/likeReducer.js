@@ -7,8 +7,6 @@ let initialState = {
 }
 
 export const likeReducer = (state = initialState, action) => {
-    console.log("likeReducer state  : ", state)
-    console.log("likeReducer action  : ", action)
     switch (action.type) {
         case CLICK:
             return { ...state, likes: state.likes + 1 }
