@@ -9,7 +9,6 @@ let initialState = {
 }
 
 export const inputReducer = (state = initialState, action) => {
-    console.log("inputReducer  : ", action)
     switch (action.type) {
         case SEND_VALUE:
             return { ...state, hello: action.text, text: action.text }

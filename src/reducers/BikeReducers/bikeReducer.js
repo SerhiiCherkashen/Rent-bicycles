@@ -1,70 +1,111 @@
-import { SELECTOR_CLICK, SUBMIT_CLICK } from "../../redux/types"
+import { MAP_BIKE_ARRAY, SELECTOR_CLICK, SUBMIT_CLICK } from "../../redux/types"
 
 
 let initialState = {
-    now: "nichego",
-    currentBike: "",
-    value: 0,
-    selectValue: "",
-    nameBike: "",
-    priceBike: "",
-    selectClick: "",
-    two: "dwa",
-    Road: {
-        id: 1,
-        name: "Road Bike",
-        price: 10
+    variables: {
+        now: "nichego",
+        currentBike: "",
+        value: 0,
+        selectValue: "",
+        nameBike: "Road Bike",
+        priceBike: 10,
+        selectClick: "",
+        two: "dwa",
+        totalCount: 0,
+        totalPrice: 0,
+        availableCount: 11
     },
-    mountain: {
-        id: 2,
-        name: "Mountain Bike",
-        price: 20
+    currentBike: {
+        bikeId: "1",
+        bikeAvailable: true,
+        bikeSelectName: "Road",
+        bikeName: "Road Bike",
+        bikePrice: 10,
     },
-    Touring: {
-        id: 3,
-        name: "Touring Bike",
-        price: 15
-    },
-    Folding: {
-        id: 4,
-        name: "Folding Bike",
-        price: 25
-    },
-    Fixed: {
-        id: 5,
-        name: "Fixed Bike",
-        price: 12
-    },
-    BMX: {
-        id: 6,
-        name: "BMX Bike",
-        price: 10
-    },
-    Recumbent: {
-        id: 7,
-        name: "Recumbent Bike",
-        price: 18
-    },
-    Cruiser: {
-        id: 8,
-        name: "Cruiser Bike",
-        price: 35
-    },
-    Hybrid: {
-        id: 9,
-        name: "Hybrid Bike",
-        price: 20
-    },
-    Cycle: {
-        id: 10,
-        name: "Cycle Bike",
-        price: 40
-    },
-    Electric: {
-        id: 11,
-        name: "Electric Bike",
-        price: 50
-    },
+    mapSelect: "",
+    bikeArray: [
+        "Road", "Mountain", "Touring", "Folding", "Fixed", "BMX",
+        "Recumbent", "Cruiser", "Hybrid", "Cycle", "Electric",
+    ],
+    bikes: [
+        {
+            id: 1,
+            available: true,
+            selectName: "Road",
+            name: "Road Bike",
+            price: 10
+        },
+        {
+            id: 2,
+            available: true,
+            selectName: "Mountain",
+            name: "Mountain Bike",
+            price: 20
+        },
+        {
+            id: 3,
+            available: true,
+            selectName: "Touring",
+            name: "Touring Bike",
+            price: 15
+        },
+        {
+            id: 4,
+            available: true,
+            selectName: "Folding",
+            name: "Folding Bike",
+            price: 25
+        },
+        {
+            id: 5,
+            available: true,
+            selectName: "Fixed",
+            name: "Fixed Bike",
+            price: 12
+        },
+        {
+            id: 6,
+            available: true,
+            selectName: "BMX",
+            name: "BMX Bike",
+            price: 10
+        },
+        {
+            id: 7,
+            available: true,
+            selectName: "Recumbent",
+            name: "Recumbent Bike",
+            price: 18
+        },
+        {
+            id: 8,
+            available: true,
+            selectName: "Cruiser",
+            name: "Cruiser Bike",
+            price: 35
+        },
+        {
+            id: 9,
+            available: true,
+            selectName: "Hybrid",
+            name: "Hybrid Bike",
+            price: 20
+        },
+        {
+            id: 10,
+            available: true,
+            selectName: "Cycle",
+            name: "Cycle Bike",
+            price: 40
+        },
+        {
+            id: 11,
+            available: true,
+            selectName: "Electric",
+            name: "Electric Bike",
+            price: 50
+        },
+    ],
 
 
 
@@ -85,52 +126,131 @@ let initialState = {
 
 export const bikeReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SUBMIT_CLICK:
-            return { ...state, value: state.value + 1 }
+
         case SELECTOR_CLICK:
             let select = document.getElementById("select");
             let getValue = select.value;
-
-            let arrayState = Object.keys(state)
-            console.log("arrayState : ", arrayState)
-
-            for (let i = 0; i < arrayState.length; i++) {
-                if (getValue === arrayState[i]) {
-                    console.log("  state initial   ", state)
-                    console.log("  arrayState[i]  ", arrayState[i])
-                    console.log("    state.arrayState[i].name  ", state.arrayState[i].name)
-                    return { ...state, nameBike: state.arrayState[i].name }
+            let i = ""
+            let element = ""
+            state.bikes.forEach((el, index) => {
+                if (el.selectName === getValue) {
+                    i = index
+                    element = el
+                    return (i, el)
                 }
+                return (i, el)
+            })
+            let b = { ...state }
 
+            b.currentBike = { ...state.currentBike }
+
+            b.currentBike.bikeId = state.bikes[i].id
+            b.currentBike.bikeAvailable = state.bikes[i].available
+            b.currentBike.bikeSelectName = state.bikes[i].selectName
+            b.currentBike.bikeName = state.bikes[i].name
+            b.currentBike.bikePrice = state.bikes[i].price
+
+            console.log("b : ", b)
+
+            return b
+        case SUBMIT_CLICK:
+            if (state.currentBike.bikeAvailable) {
+
+                let a = { ...state }
+                a.currentBike = { ...state.currentBike }
+                a.currentBike.bikeAvailable = false
+                a.bikes[state.currentBike.bikeId - 1] = { ...state.bikes[state.currentBike.bikeId - 1] }
+                a.bikes[state.currentBike.bikeId - 1].available = false
+
+                a.variables = { ...state.variables }
+                a.variables.totalCount = state.variables.totalCount + 1
+                a.variables.totalPrice = state.variables.totalPrice + state.currentBike.bikePrice
+                a.variables.availableCount = state.variables.availableCount - 1
+
+                return a
+            } else {
+                alert("this bike is no available !")
             }
-        // arrayState.forEach(el => {
-        //     // console.log("arrayState : ", el, getValue, el === getValue)
-        //     // console.log("arrayState  state.el: ", state.el)
-        //     if (el === getValue) {
-        //         // let nazva = el
-        //         // console.log(" nazva : ", nazva)
-        //         // console.log("arrayState  state.nazva: ", state.nazva)
-        //         // console.log(" element : ", state)
-        //         // console.log(" element : ", el)
-        //         // console.log(" element : ", typeof el)
-        //         // console.log(" element : ", Number(el))
-        //         // console.log(" element : ", typeof Number(el))
-        //         // console.log(" nameBike 'Road': ", state.Mountain)
-        //         // console.log(" nameBike Road: ", state.Road)
-        //         // console.log(" nameBike Road.name : ", state.Road.name)
-        //         // console.log(" nameBike state: ", state)
-        //         // console.log(" nameBike getValue: ", state.getValue)
-        //         // console.log(" nameBike getValue: ", state.getValue)
-        //         // console.log(" nameBike el: ", state.el)
-        //         // let imia = initialState.el.name
-        //         return {
-        //             ...state, selectClick: el
-        //         }
-        //     }
-        // })
-        // return { ...state, selectValue: getValue }
+
+        // return { ...state, value: state.variables.value + 1 }
         default: return state
     }
+
+
+
+
+
+
+
+
+
+    // case MAP_BIKE_ARRAY:
+    //     return {
+    //         ...state, mapSelect: state.bikeArray[3]
+
+    //         // ...state, mapSelect: state.bikeArray.forEach((item, index) => {
+    //         //     <option value={String(item)}>{item}</option>
+    //     }
+
+
+
+
+
+
+
+
+
+
+
+    // let y = 0
+    // for (let i = 0; i < state.bikes.length; i++) {
+    //     y = i
+    //     console.log(" i >>>", i, "y", y)
+    //     if (getValue === state.bikes[i].selectName) {
+    //         // console.log("true")
+    //         // console.log("getValue", getValue)
+    //         // console.log("state.bikes[i].selectName", state.bikes[i].selectName)
+    //         // console.log("state.bikes[i = 6].name  : ", state.bikes[6].selectName)
+    //         // return { ...state, nameBike: state.bikes[5].name, now: "hyi" }
+    //     }
+    //     // console.log("y end   AAAAA: ")
+    //     // console.log("y end : ", y)
+    //     // return y
+    // }
+    // 
+    // console.log("for end  : ")
+    // console.log("y 3 : ", y)
+    // return {
+    //     ...state, nameBike: state.bikes[y].name
+    // }
+    // return { ...state, nameBike: "lol" }
+    // a = { ...state }
+
+
+
+
+
+    // let arrayState = Object.keys(state.bikes)
+    // console.log("arrayState : ", arrayState)
+    // 
+    // for (let i = 0; i < arrayState.length; i++) {
+    //     if (getValue === arrayState[i]) {
+    //         return {
+    //             ...state, nameBike: state.bikes[arrayState[i]].name
+    //         }
+    //     }
+    // }
+    // let rrr = state.bikes
+    // console.log("state.bike : ", state.bikes)
+
+
+
+
+
+
+
+
+
     // switch (action.type) {
     //     case SUBMIT_CLICK:
     //         return { ...state }
