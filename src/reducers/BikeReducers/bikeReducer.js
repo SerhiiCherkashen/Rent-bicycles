@@ -22,7 +22,8 @@ let initialState = {
         bikeName: "Road Bike",
         bikePrice: 10,
     },
-    mapSelect: "",
+    miniArray: "qwerty",
+    mapBikeArray: [],
     bikeArray: [
         "Road", "Mountain", "Touring", "Folding", "Fixed", "BMX",
         "Recumbent", "Cruiser", "Hybrid", "Cycle", "Electric",
@@ -126,7 +127,14 @@ let initialState = {
 
 export const bikeReducer = (state = initialState, action) => {
     switch (action.type) {
+        case MAP_BIKE_ARRAY:
+            return {
+                // ...state, miniArray: state.bikeArray[3]
 
+                ...state, mapBikeArray: state.bikeArray.forEach((item, index) => {
+                    <option value={String(item)}>{item}</option>
+                })
+            }
         case SELECTOR_CLICK:
             let select = document.getElementById("select");
             let getValue = select.value;
@@ -166,8 +174,20 @@ export const bikeReducer = (state = initialState, action) => {
                 a.variables.totalCount = state.variables.totalCount + 1
                 a.variables.totalPrice = state.variables.totalPrice + state.currentBike.bikePrice
                 a.variables.availableCount = state.variables.availableCount - 1
-
                 return a
+
+                // return {
+                //     ...state,
+                //      ...state.currentBike,
+                //     bikeAvailable: false,
+                //     ...state.bikes[state.currentBike.bikeId - 1],
+                //     available: false,
+                //     ...state.variables,
+                //     totalCount: state.variables.totalCount + 1,
+                //     totalPrice: state.variables.totalPrice + state.currentBike.bikePrice,
+                //     availableCount: state.variables.availableCount - 1,
+                // }
+
             } else {
                 alert("this bike is no available !")
             }
@@ -184,13 +204,7 @@ export const bikeReducer = (state = initialState, action) => {
 
 
 
-    // case MAP_BIKE_ARRAY:
-    //     return {
-    //         ...state, mapSelect: state.bikeArray[3]
 
-    //         // ...state, mapSelect: state.bikeArray.forEach((item, index) => {
-    //         //     <option value={String(item)}>{item}</option>
-    //     }
 
 
 

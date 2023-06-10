@@ -19,9 +19,11 @@ const Bike = (props) => {
             <div className='bikeType q'>
                 <span>Bike type</span>
                 <select onClick={props.clickSelect} id="select">
-                    {bikeArray.map((item, index) => {
+                    {props.mapBikeArray()}
+                    {/* {bikeArray.map((item, index) => {
                         return <option value={String(item)}>{item}</option>
-                    })}
+                    })} */}
+
                     {/* {
                         <select onClick={props.clickSelect} id="select">
                             {bikeArray.map((item, index) => {
@@ -45,6 +47,10 @@ const Bike = (props) => {
         {/* <span>{props.now}</span> */}
         {/* <span>NOW :  {props.now}</span>
         <span>NOW 2 :   {props.now2}</span> */}
+        <div>  miniArray :    {props.miniArray}</div>
+        <div>  mapBikeArray :    {props.mapBikeArray}</div>
+        <div>  mapBikeArray :    {props.mapBikeArray[0]}</div>
+        <p>hyi</p>
         <div>  bikeAvailable  :   {props.bikeAvailable}</div>
         <div>  bikeName  :   {props.bikeName}</div>
         <div>  bikePrice  :   {props.bikePrice}</div>
@@ -58,19 +64,24 @@ const Bike = (props) => {
             (props.availableCount) ? <p>Available bicycles ({props.availableCount})</p>
                 : <p> There are no available bicycles</p>
         }
+        <p>Hello world!!!</p>
         {/* {props.mapSelect} */}
         {/* {props.mapBikeArray()} */}
+        {/* {props.bikeArray} */}
+
 
     </div>
 }
 let mapStateToProps = (state) => {
-
+    // debugger
     // console.log("value : ", state.variables.value)
     let v = state.BikePage.variables
     let c = state.BikePage.currentBike
+    let page = state.BikePage
     return {
-        // mapSelect: state.mapSelect,
-        // bikeArray: state.bikeArray,
+        miniArray: page.miniArray,
+        mapBikeArray: page.mapBikeArray,
+        bikeArray: page.bikeArray,
         now: v.now,
         now2: v.now,
         value: v.value,
@@ -96,9 +107,9 @@ let mapDispatchToProps = (dispatch) => {
         clickSelect: () => {
             dispatch(selectorAC())
         },
-        // mapBikeArray: () => {
-        //     dispatch(mapBikeArrayAC())
-        // },
+        mapBikeArray: () => {
+            dispatch(mapBikeArrayAC())
+        },
     }
 }
 
