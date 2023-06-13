@@ -1,5 +1,8 @@
 import { MAP_BIKE_ARRAY, SELECTOR_CLICK, SUBMIT_CLICK } from "../../redux/types"
 
+function privet() {
+    alert("privet!!!")
+}
 
 let initialState = {
     variables: {
@@ -22,12 +25,33 @@ let initialState = {
         bikeName: "Road Bike",
         bikePrice: 10,
     },
-    miniArray: "qwerty",
-    mapBikeArray: [],
     bikeArray: [
         "Road", "Mountain", "Touring", "Folding", "Fixed", "BMX",
         "Recumbent", "Cruiser", "Hybrid", "Cycle", "Electric",
     ],
+    miniArray: "qwerty",
+    problemArray: [
+        "qwerty", "yuiop", "lol",
+        // "aaa", "bbb", "ccc"
+    ],
+    // selectBikeArray: [
+    //     <option id={1} value={String("Road")}>{"Road"}</option>,
+    //     <option id={2} value={String("Mountain")}>{"Mountain"}</option>,
+    //     <option id={3} value={String("Touring")}>{"Touring"}</option>,
+    //     <option id={4} value={String("Folding")}>{"Folding"}</option>,
+    //     <option id={5} value={String("Fixed")}>{"Fixed"}</option>,
+    //     <option id={6} value={String("BMX")}>{"BMX"}</option>,
+    //     <option id={7} value={String("Recumbent")}>{"Recumbent"}</option>,
+    //     <option id={8} value={String("Cruiser")}>{"Cruiser"}</option>,
+    //     <option id={9} value={String("Hybrid")}>{"Hybrid"}</option>,
+    //     <option id={10} value={String("Cycle")}>{"Cycle"}</option>,
+    //     <option id={11} value={String("Electric")}>{"Electric"}</option>,
+    // ],
+    selectBikeArray2: [],
+    spareArray: "road",
+    spareId: 1,
+    canReturnBike: [],
+
     bikes: [
         {
             id: 1,
@@ -108,33 +132,35 @@ let initialState = {
         },
     ],
 
-
-
-
 }
-// switch (action.type) {
-//     case Mountain:
-//         return "hello"
-//     case Road:
-//         return "hello"
-//     case Touring:
-//         return "hello"
-//     case Folding:
-//         return "hello"
-//     case Fixed:
-//         return "hello"
-//     default:   }
+let fn = () => {
+    initialState.bikeArray.map(el => {
+        initialState.selectBikeArray2.push(<option value={String(el)}>{el}</option>)
+    })
+    console.log("bikeArray : ", initialState.bikeArray)
+    console.log("selectBikeArray2 : ", initialState.selectBikeArray2)
+}
+fn()
 
 export const bikeReducer = (state = initialState, action) => {
     switch (action.type) {
         case MAP_BIKE_ARRAY:
-            return {
-                // ...state, miniArray: state.bikeArray[3]
 
-                ...state, mapBikeArray: state.bikeArray.forEach((item, index) => {
-                    <option value={String(item)}>{item}</option>
-                })
-            }
+        // let a = { ...state }
+        // a.bikeArray = [...state.bikeArray]
+        // a.selectBikeArray2 = [...state.selectBikeArray2]
+
+        // state.bikeArray.map(el => {
+        //     a.selectBikeArray2.push(<option value={String(el)}>{el}</option>)
+        // })
+        // a.selectBikeArray2.push(state.bikeArray.map((item, index) => {
+        //     // <option value={String(item)}>{item}</option>
+        //     return item
+        // })
+        // )
+        // console.log("bikeArray : ", state.bikeArray)
+        // console.log("selectBikeArray2 : ", a.selectBikeArray2)
+        // return a
         case SELECTOR_CLICK:
             let select = document.getElementById("select");
             let getValue = select.value;
@@ -158,41 +184,53 @@ export const bikeReducer = (state = initialState, action) => {
             b.currentBike.bikeName = state.bikes[i].name
             b.currentBike.bikePrice = state.bikes[i].price
 
-            console.log("b : ", b)
-
             return b
         case SUBMIT_CLICK:
             if (state.currentBike.bikeAvailable) {
 
-                let a = { ...state }
-                a.currentBike = { ...state.currentBike }
-                a.currentBike.bikeAvailable = false
-                a.bikes[state.currentBike.bikeId - 1] = { ...state.bikes[state.currentBike.bikeId - 1] }
-                a.bikes[state.currentBike.bikeId - 1].available = false
+                let c = { ...state }
+                c.currentBike = { ...state.currentBike }
+                c.currentBike.bikeAvailable = false
+                c.bikes[state.currentBike.bikeId - 1] = { ...state.bikes[state.currentBike.bikeId - 1] }
+                c.bikes[state.currentBike.bikeId - 1].available = false
 
-                a.variables = { ...state.variables }
-                a.variables.totalCount = state.variables.totalCount + 1
-                a.variables.totalPrice = state.variables.totalPrice + state.currentBike.bikePrice
-                a.variables.availableCount = state.variables.availableCount - 1
-                return a
+                c.variables = { ...state.variables }
+                c.variables.totalCount = state.variables.totalCount + 1
+                c.variables.totalPrice = state.variables.totalPrice + state.currentBike.bikePrice
+                c.variables.availableCount = state.variables.availableCount - 1
 
-                // return {
-                //     ...state,
-                //      ...state.currentBike,
-                //     bikeAvailable: false,
-                //     ...state.bikes[state.currentBike.bikeId - 1],
-                //     available: false,
-                //     ...state.variables,
-                //     totalCount: state.variables.totalCount + 1,
-                //     totalPrice: state.variables.totalPrice + state.currentBike.bikePrice,
-                //     availableCount: state.variables.availableCount - 1,
+                // a.spareArray = { ...state.spareArray }
+                // a.spareArray = state.selectBikeArray.splice(state.currentBike.bikeId - 1, 1)
+                // a.spareId = state.currentBike.bikeId
+                // a.canReturnBike = state.spareArray
+                // a.canReturnBike = a.spareArray
+                // 
+                // a.spareArray = { ...state.spareArray }
+                // a.spareArray = state.selectBikeArray.splice(state.currentBike.bikeId - 1, 1)
+                // a.spareId = state.currentBike.bikeId
+                // a.canReturnBike = state.spareArray
+                // a.canReturnBike = a.spareArray
+                // a.canReturnBike = state.spareArray
+
+                // a.selectBikeArray2 = [...state.selectBikeArray2]
+                // a.bikeArray = [...state.bikeArray]
+                // a.selectBikeArray2.push(state.bikeArray.map((item, index) => {
+                //     return <option value={String(item)}>{item}</option>
+                // })
+                // )
+
+                console.log("a : ", c)
+                console.log("spareArray : ", state.spareArray)
+                // {
+                //     bikeArray.map((item, index) => {
+                //         return <option value={String(item)}>{item}</option>
+                //     })
                 // }
-
+                return c
             } else {
                 alert("this bike is no available !")
             }
 
-        // return { ...state, value: state.variables.value + 1 }
         default: return state
     }
 
@@ -204,11 +242,40 @@ export const bikeReducer = (state = initialState, action) => {
 
 
 
+    // function: () => {
+    //     let localArray = []
+    //     initialState.bikeArray.map((item, index) => {
+    //         localArray.push(item)
+    //     })
+    //     console.log("localArray : ", localArray)
+    //     return localArray
+    // },
+
+    // initialState.privet = privet
+    // let funcForEach = () => {
+    //     let localArray = []
+    //     initialState.bikeArray.map((item, index) => {
+    //         localArray.push(item)
+    //     })
+    //     console.log("localArray : ", localArray)
+    //     return localArray
+    // }
+    // let resultFunc = funcForEach()
+    // console.log("resultFunc : ", resultFunc)
 
 
 
-
-
+    // return {
+    //     ...state,
+    //      ...state.currentBike,
+    //     bikeAvailable: false,
+    //     ...state.bikes[state.currentBike.bikeId - 1],
+    //     available: false,
+    //     ...state.variables,
+    //     totalCount: state.variables.totalCount + 1,
+    //     totalPrice: state.variables.totalPrice + state.currentBike.bikePrice,
+    //     availableCount: state.variables.availableCount - 1,
+    // }
 
 
 
