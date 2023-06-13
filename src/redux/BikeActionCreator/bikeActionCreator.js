@@ -1,4 +1,4 @@
-import { MAP_BIKE_ARRAY, SELECTOR_CLICK, SUBMIT_CLICK } from "../types";
+import { DELETE_CLICK, MAP_BIKE_ARRAY, SELECTOR_CLICK, SUBMIT_CLICK } from "../types";
 
 
 
@@ -8,3 +8,4 @@ export const selectorAC = () => ({ type: SELECTOR_CLICK })
 
 export const mapBikeArrayAC = () => ({ type: MAP_BIKE_ARRAY })
 
+export const deleteClickAC = (id) => ({ type: DELETE_CLICK, id })

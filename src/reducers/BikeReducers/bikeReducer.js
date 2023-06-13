@@ -1,4 +1,4 @@
-import { MAP_BIKE_ARRAY, SELECTOR_CLICK, SUBMIT_CLICK } from "../../redux/types"
+import { DELETE_CLICK, MAP_BIKE_ARRAY, SELECTOR_CLICK, SUBMIT_CLICK } from "../../redux/types"
 
 function privet() {
     alert("privet!!!")
@@ -29,28 +29,22 @@ let initialState = {
         "Road", "Mountain", "Touring", "Folding", "Fixed", "BMX",
         "Recumbent", "Cruiser", "Hybrid", "Cycle", "Electric",
     ],
+    selectOptionBikeArray: [],
+
+    reserveBikeArray: [],
+
     miniArray: "qwerty",
     problemArray: [
         "qwerty", "yuiop", "lol",
-        // "aaa", "bbb", "ccc"
     ],
-    // selectBikeArray: [
-    //     <option id={1} value={String("Road")}>{"Road"}</option>,
-    //     <option id={2} value={String("Mountain")}>{"Mountain"}</option>,
-    //     <option id={3} value={String("Touring")}>{"Touring"}</option>,
-    //     <option id={4} value={String("Folding")}>{"Folding"}</option>,
-    //     <option id={5} value={String("Fixed")}>{"Fixed"}</option>,
-    //     <option id={6} value={String("BMX")}>{"BMX"}</option>,
-    //     <option id={7} value={String("Recumbent")}>{"Recumbent"}</option>,
-    //     <option id={8} value={String("Cruiser")}>{"Cruiser"}</option>,
-    //     <option id={9} value={String("Hybrid")}>{"Hybrid"}</option>,
-    //     <option id={10} value={String("Cycle")}>{"Cycle"}</option>,
-    //     <option id={11} value={String("Electric")}>{"Electric"}</option>,
-    // ],
-    selectBikeArray2: [],
+
+    reserveArray: [],
+    reserveId: 1,
+
     spareArray: "road",
     spareId: 1,
     canReturnBike: [],
+    reserveCanReturnBike: [],
 
     bikes: [
         {
@@ -135,32 +129,16 @@ let initialState = {
 }
 let fn = () => {
     initialState.bikeArray.map(el => {
-        initialState.selectBikeArray2.push(<option value={String(el)}>{el}</option>)
+        initialState.selectOptionBikeArray.push(<option value={String(el)}>{el}</option>)
     })
-    console.log("bikeArray : ", initialState.bikeArray)
-    console.log("selectBikeArray2 : ", initialState.selectBikeArray2)
+    // console.log("bikeArray : ", initialState.bikeArray)
+    // console.log("selectBikeArray2 : ", initialState.selectBikeArray2)
 }
 fn()
 
 export const bikeReducer = (state = initialState, action) => {
     switch (action.type) {
-        case MAP_BIKE_ARRAY:
-
-        // let a = { ...state }
-        // a.bikeArray = [...state.bikeArray]
-        // a.selectBikeArray2 = [...state.selectBikeArray2]
-
-        // state.bikeArray.map(el => {
-        //     a.selectBikeArray2.push(<option value={String(el)}>{el}</option>)
-        // })
-        // a.selectBikeArray2.push(state.bikeArray.map((item, index) => {
-        //     // <option value={String(item)}>{item}</option>
-        //     return item
-        // })
-        // )
-        // console.log("bikeArray : ", state.bikeArray)
-        // console.log("selectBikeArray2 : ", a.selectBikeArray2)
-        // return a
+        // case MAP_BIKE_ARRAY:
         case SELECTOR_CLICK:
             let select = document.getElementById("select");
             let getValue = select.value;
@@ -186,50 +164,81 @@ export const bikeReducer = (state = initialState, action) => {
 
             return b
         case SUBMIT_CLICK:
-            if (state.currentBike.bikeAvailable) {
+            // if (state.currentBike.bikeAvailable) {
 
-                let c = { ...state }
-                c.currentBike = { ...state.currentBike }
-                c.currentBike.bikeAvailable = false
-                c.bikes[state.currentBike.bikeId - 1] = { ...state.bikes[state.currentBike.bikeId - 1] }
-                c.bikes[state.currentBike.bikeId - 1].available = false
+            let c = { ...state }
+            c.currentBike = { ...state.currentBike }
+            c.currentBike.bikeAvailable = false
+            c.bikes[state.currentBike.bikeId - 1] = { ...state.bikes[state.currentBike.bikeId - 1] }
+            c.bikes[state.currentBike.bikeId - 1].available = false
 
-                c.variables = { ...state.variables }
-                c.variables.totalCount = state.variables.totalCount + 1
-                c.variables.totalPrice = state.variables.totalPrice + state.currentBike.bikePrice
-                c.variables.availableCount = state.variables.availableCount - 1
+            c.variables = { ...state.variables }
+            c.variables.totalCount = state.variables.totalCount + 1
+            c.variables.totalPrice = state.variables.totalPrice + state.currentBike.bikePrice
+            c.variables.availableCount = state.variables.availableCount - 1
 
-                // a.spareArray = { ...state.spareArray }
-                // a.spareArray = state.selectBikeArray.splice(state.currentBike.bikeId - 1, 1)
-                // a.spareId = state.currentBike.bikeId
-                // a.canReturnBike = state.spareArray
-                // a.canReturnBike = a.spareArray
-                // 
-                // a.spareArray = { ...state.spareArray }
-                // a.spareArray = state.selectBikeArray.splice(state.currentBike.bikeId - 1, 1)
-                // a.spareId = state.currentBike.bikeId
-                // a.canReturnBike = state.spareArray
-                // a.canReturnBike = a.spareArray
-                // a.canReturnBike = state.spareArray
 
-                // a.selectBikeArray2 = [...state.selectBikeArray2]
-                // a.bikeArray = [...state.bikeArray]
-                // a.selectBikeArray2.push(state.bikeArray.map((item, index) => {
-                //     return <option value={String(item)}>{item}</option>
-                // })
-                // )
+            c.bikeArray = [...state.bikeArray]
+            c.reserveBikeArray = [...state.reserveBikeArray]
+            c.canReturnBike = [...state.canReturnBike]
+            c.selectOptionBikeArray = [...state.selectOptionBikeArray]
+            c.reserveArray = [...state.reserveArray]
 
-                console.log("a : ", c)
-                console.log("spareArray : ", state.spareArray)
-                // {
-                //     bikeArray.map((item, index) => {
-                //         return <option value={String(item)}>{item}</option>
-                //     })
-                // }
-                return c
-            } else {
-                alert("this bike is no available !")
-            }
+            state.bikeArray.forEach(item => {
+                if (item !== state.currentBike.bikeSelectName) {
+                    c.reserveBikeArray.push(item)
+
+                } else {
+                    c.canReturnBike.push(<div>{item + " "}
+                        <button id={item} onClick={() => {
+                            console.log("DELETE ID : ", item)
+                            c.reserveCanReturnBike = [...state.reserveCanReturnBike]
+                            c.selectOptionBikeArray = []
+                            c.bikeArray.push(item)
+                            c.canReturnBike.forEach((del) => {
+                                if (del === item) {
+                                    c.reserveCanReturnBike.push(del)
+                                }
+                            })
+                            c.canReturnBike = c.reserveCanReturnBike
+                            c.reserveCanReturnBike = []
+
+                            c.reserveBikeArray = c.bikeArray
+                            console.log("c.bikeArray : ", c.bikeArray)
+                            c.bikeArray.map(el => {
+                                c.selectOptionBikeArray.push(<option value={String(el)}>{el}</option>)
+                                return c
+                            })
+                        }} >Delete</button>
+                    </div >)
+                }
+            })
+            c.selectOptionBikeArray = []
+            c.bikeArray = c.reserveBikeArray
+            c.reserveBikeArray = []
+
+            c.bikeArray.map(el => {
+                c.selectOptionBikeArray.push(<option value={String(el)}>{el}</option>)
+            })
+
+
+
+            console.log("c : ", c)
+            console.log("selectOptionBikeArray : ", c.selectOptionBikeArray)
+            console.log("reserveBikeArray : ", c.reserveBikeArray)
+            console.log("canReturnBike : ", c.canReturnBike)
+            // {
+            //     bikeArray.map((item, index) => {
+            //         return <option value={String(item)}>{item}</option>
+            //     })
+            // }
+            return c
+        // } else {
+        //     // alert("this bike is no available !")
+        // }
+        case DELETE_CLICK:
+            console.log("DELETE ID : ", action.id)
+            return state
 
         default: return state
     }
@@ -237,6 +246,56 @@ export const bikeReducer = (state = initialState, action) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // case MAP_BIKE_ARRAY:
+    // 
+    // let a = { ...state }
+    // a.bikeArray = [...state.bikeArray]
+    // a.selectBikeArray2 = [...state.selectBikeArray2]
+    //
+    // state.bikeArray.map(el => {
+    //     a.selectBikeArray2.push(<option value={String(el)}>{el}</option>)
+    // })
+    // a.selectBikeArray2.push(state.bikeArray.map((item, index) => {
+    //     // <option value={String(item)}>{item}</option>
+    //     return item
+    // })
+    // )
+    // console.log("bikeArray : ", state.bikeArray)
+    // console.log("selectBikeArray2 : ", a.selectBikeArray2)
+    // return a
+
+
+
+    // selectBikeArray: [
+    //     <option id={1} value={String("Road")}>{"Road"}</option>,
+    //     <option id={2} value={String("Mountain")}>{"Mountain"}</option>,
+    //     <option id={3} value={String("Touring")}>{"Touring"}</option>,
+    //     <option id={4} value={String("Folding")}>{"Folding"}</option>,
+    //     <option id={5} value={String("Fixed")}>{"Fixed"}</option>,
+    //     <option id={6} value={String("BMX")}>{"BMX"}</option>,
+    //     <option id={7} value={String("Recumbent")}>{"Recumbent"}</option>,
+    //     <option id={8} value={String("Cruiser")}>{"Cruiser"}</option>,
+    //     <option id={9} value={String("Hybrid")}>{"Hybrid"}</option>,
+    //     <option id={10} value={String("Cycle")}>{"Cycle"}</option>,
+    //     <option id={11} value={String("Electric")}>{"Electric"}</option>,
+    // ],
 
 
 
