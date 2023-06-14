@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { deleteClickAC, mapBikeArrayAC, selectorAC, submitAC } from "../redux/BikeActionCreator/bikeActionCreator";
-
+import { buttonClickFn } from "../reducers/BikeReducers/bikeReducer";
 
 const Bike = (props) => {
     return <div>
@@ -25,12 +25,14 @@ const Bike = (props) => {
 
             <div className='select q'>
                 <button onClick={props.clickSubmit} >Submit</button>
+            </div>
 
+            <div className='select q'>
+                <button onClick={props.clickDelete} >Delete</button>
             </div>
         </div>
-        <div> 1. SpareArray  :   {props.spareArray}</div>
-        <div>2. SpareId  :   {props.spareId}</div>
-        <div> 3. You can Return Bike  :   {props.canReturnBike}</div>
+
+        <div> 1. You can Return Bike  :   {props.canReturnBike}</div>
 
         {
             (props.totalCount === 0) ? <p>You have no rented bicycles</p>
@@ -84,10 +86,10 @@ let mapDispatchToProps = (dispatch) => {
         clickSelect: () => {
             dispatch(selectorAC())
         },
-        // mapBikeArray: () => {
-        //     dispatch(mapBikeArrayAC())
+        // buttonClickFn: () => {
+        //     dispatch(deleteClickAC())
         // },
-        deleteClick: () => {
+        clickDelete: () => {
             dispatch(deleteClickAC())
         }
     }
@@ -102,6 +104,33 @@ export default connect(mapStateToProps, mapDispatchToProps)(Bike)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// mapBikeArray: () => {
+//     dispatch(mapBikeArrayAC())
+// },
 
 
 {/* <div> selectBikeArray :    {props.selectBikeArray}</div> */ }

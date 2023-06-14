@@ -1,8 +1,5 @@
 import { DELETE_CLICK, MAP_BIKE_ARRAY, SELECTOR_CLICK, SUBMIT_CLICK } from "../../redux/types"
 
-function privet() {
-    alert("privet!!!")
-}
 
 let initialState = {
     variables: {
@@ -33,10 +30,10 @@ let initialState = {
 
     reserveBikeArray: [],
 
-    miniArray: "qwerty",
-    problemArray: [
-        "qwerty", "yuiop", "lol",
-    ],
+    miniArray: [],
+    problemArray: [],
+
+    element: "",
 
     reserveArray: [],
     reserveId: 1,
@@ -44,6 +41,7 @@ let initialState = {
     spareArray: "road",
     spareId: 1,
     canReturnBike: [],
+    itemsCanReturnBike: [],
     reserveCanReturnBike: [],
 
     bikes: [
@@ -125,20 +123,45 @@ let initialState = {
             price: 50
         },
     ],
+    renderOptionsFn() {
+        this.bikeArray.map(el => {
+            this.selectOptionBikeArray.push(<option value={String(el)}>{el}</option>)
+        })
+    }
+}
+initialState.renderOptionsFn()
+
+let pushOptionsFn = (c) => {
+    c.bikeArray.map(el => {
+        c.selectOptionBikeArray.push(<option value={String(el)}>{el}</option>)
+    })
+}
+
+export const buttonClickFn = (c, item) => {
+    console.log("click delete FN  : ", item)
+
+    console.log("initialState.reserveBikeArray  : ", initialState.reserveBikeArray)
+    initialState.reserveBikeArray.push(item) //
+    console.log("initialState.reserveBikeArray: ", initialState.reserveBikeArray)
+    initialState.canReturnBike.forEach((del) => {
+        if (del === item) {
+            initialState.reserveCanReturnBike.push(del)
+        }
+    })
+    initialState.canReturnBike = c.reserveCanReturnBike
+    initialState.reserveCanReturnBike = []
+
+    initialState.selectOptionBikeArray = []
+    initialState.bikeArray = initialState.reserveBikeArray
+    initialState.reserveBikeArray = []
+
+    pushOptionsFn(initialState)
+    console.log(" initialState.selectOptionBikeArray : ", initialState.selectOptionBikeArray)
 
 }
-let fn = () => {
-    initialState.bikeArray.map(el => {
-        initialState.selectOptionBikeArray.push(<option value={String(el)}>{el}</option>)
-    })
-    // console.log("bikeArray : ", initialState.bikeArray)
-    // console.log("selectBikeArray2 : ", initialState.selectBikeArray2)
-}
-fn()
 
 export const bikeReducer = (state = initialState, action) => {
     switch (action.type) {
-        // case MAP_BIKE_ARRAY:
         case SELECTOR_CLICK:
             let select = document.getElementById("select");
             let getValue = select.value;
@@ -165,7 +188,7 @@ export const bikeReducer = (state = initialState, action) => {
             return b
         case SUBMIT_CLICK:
             // if (state.currentBike.bikeAvailable) {
-
+            console.log("SUBMIT_CLICK")
             let c = { ...state }
             c.currentBike = { ...state.currentBike }
             c.currentBike.bikeAvailable = false
@@ -181,64 +204,70 @@ export const bikeReducer = (state = initialState, action) => {
             c.bikeArray = [...state.bikeArray]
             c.reserveBikeArray = [...state.reserveBikeArray]
             c.canReturnBike = [...state.canReturnBike]
+            c.itemsCanReturnBike = [...state.itemsCanReturnBike]
             c.selectOptionBikeArray = [...state.selectOptionBikeArray]
             c.reserveArray = [...state.reserveArray]
+
+            c.reserveCanReturnBike = [...state.reserveCanReturnBike]
+
 
             state.bikeArray.forEach(item => {
                 if (item !== state.currentBike.bikeSelectName) {
                     c.reserveBikeArray.push(item)
 
                 } else {
-                    c.canReturnBike.push(<div>{item + " "}
-                        <button id={item} onClick={() => {
-                            console.log("DELETE ID : ", item)
-                            c.reserveCanReturnBike = [...state.reserveCanReturnBike]
-                            c.selectOptionBikeArray = []
-                            c.bikeArray.push(item)
-                            c.canReturnBike.forEach((del) => {
-                                if (del === item) {
-                                    c.reserveCanReturnBike.push(del)
-                                }
-                            })
-                            c.canReturnBike = c.reserveCanReturnBike
-                            c.reserveCanReturnBike = []
-
-                            c.reserveBikeArray = c.bikeArray
-                            console.log("c.bikeArray : ", c.bikeArray)
-                            c.bikeArray.map(el => {
-                                c.selectOptionBikeArray.push(<option value={String(el)}>{el}</option>)
-                                return c
-                            })
-                        }} >Delete</button>
-                    </div >)
+                    c.canReturnBike.push(
+                        <div>{item + " "}
+                            <button id={item} onClick={() => {
+                                buttonClickFn(c, item)
+                            }} >Delete</button>
+                        </div >)
+                    c.itemsCanReturnBike.push(item)
                 }
+
             })
+            console.log("c.reserveBikeArray : ", c.reserveBikeArray)
+            console.log("c.canReturnBike : ", c.canReturnBike)
+
             c.selectOptionBikeArray = []
             c.bikeArray = c.reserveBikeArray
             c.reserveBikeArray = []
 
-            c.bikeArray.map(el => {
-                c.selectOptionBikeArray.push(<option value={String(el)}>{el}</option>)
-            })
+            pushOptionsFn(c)
 
 
-
-            console.log("c : ", c)
-            console.log("selectOptionBikeArray : ", c.selectOptionBikeArray)
-            console.log("reserveBikeArray : ", c.reserveBikeArray)
-            console.log("canReturnBike : ", c.canReturnBike)
-            // {
-            //     bikeArray.map((item, index) => {
-            //         return <option value={String(item)}>{item}</option>
-            //     })
-            // }
             return c
         // } else {
         //     // alert("this bike is no available !")
         // }
         case DELETE_CLICK:
-            console.log("DELETE ID : ", action.id)
-            return state
+            console.log("  DELETE_CLICK")
+            let d = { ...state }
+
+            d.variables = { ...state.variables }
+            d.variables.totalCount = state.variables.totalCount - 1
+            d.variables.availableCount = state.variables.availableCount + 1
+            // d.variables.totalPrice = state.variables.totalPrice + state.currentBike.bikePrice
+
+            d.bikeArray = [...state.bikeArray]
+            d.reserveBikeArray = [...state.reserveBikeArray]
+
+            d.canReturnBike = [...state.canReturnBike]
+            d.reserveCanReturnBike = [...state.reserveCanReturnBike]
+            d.itemsCanReturnBike = [...state.itemsCanReturnBike]
+
+            d.selectOptionBikeArray = [...state.selectOptionBikeArray]
+            d.reserveArray = [...state.reserveArray]
+            d.element = { ...state.element }
+
+
+            d.element = state.itemsCanReturnBike[state.itemsCanReturnBike.length - 1]
+            d.bikeArray.push(d.element)
+            d.canReturnBike.pop()
+            d.selectOptionBikeArray = []
+
+            pushOptionsFn(d)
+            return d
 
         default: return state
     }
@@ -259,6 +288,51 @@ export const bikeReducer = (state = initialState, action) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // c.reserveBikeArray.push(item) //
+    // c.canReturnBike.forEach((del) => {
+    //     if (del === item) {
+    //         c.reserveCanReturnBike.push(del)
+    //     }
+    // })
+    // c.canReturnBike = c.reserveCanReturnBike
+    // c.reserveCanReturnBike = []
+
+
+    // c.bikeArray.map(el => {
+    //     c.selectOptionBikeArray.push(<option value={String(el)}>{el}</option>)
+    // })
+
+    // () => {
+    // console.log("DELETE ID : ", item)
+    // // c.bikeArray.push(item)
+    // c.reserveBikeArray.push(item) //
+    // c.canReturnBike.forEach((del) => {
+    //     if (del === item) {
+    //         c.reserveCanReturnBike.push(del)
+    //     }
+    // })
+    // c.canReturnBike = c.reserveCanReturnBike
+    // c.reserveCanReturnBike = []
+    // 
+    // console.log("c.bikeArray : ", c.bikeArray)
+    // console.log("canReturnBike : ", c.canReturnBike)
+    // console.log("canReturnBike : ", c.canReturnBike)
+    // console.log("canReturnBike : ", c.canReturnBike)
+    // }
 
 
 

@@ -16,12 +16,12 @@ import Schetchic from './components/schetchik';
 function App(props) {
   return (
     <div className="App">
-      < SetTitle />
+      {/* < SetTitle /> */}
       {/* <Bicycle /> */}
       <Bike />
       {/* <Input /> */}
       {/* <Likes /> */}
-      <Schetchic />
+      {/* <Schetchic /> */}
     </div >
   );
 }
