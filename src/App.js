@@ -10,7 +10,7 @@ import Likes from './components/likes';
 import store from './redux/storeLikes';
 import { storeTitle } from './redux/storeTitle';
 import Input from './components/input';
-import Bike from './components/bike';
+import BikeWrapper from "./components/bike"
 import Schetchic from './components/schetchik';
 
 function App(props) {
@@ -18,7 +18,7 @@ function App(props) {
     <div className="App">
       {/* < SetTitle /> */}
       {/* <Bicycle /> */}
-      <Bike />
+      <BikeWrapper />
       {/* <Input /> */}
       {/* <Likes /> */}
       {/* <Schetchic /> */}

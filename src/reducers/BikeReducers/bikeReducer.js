@@ -1,4 +1,4 @@
-import { DELETE_CLICK, MAP_BIKE_ARRAY, SELECTOR_CLICK, SUBMIT_CLICK } from "../../redux/types"
+import { DELETE_CLICK, SELECTOR_CLICK, SUBMIT_CLICK } from "../../redux/types"
 
 
 let initialState = {
@@ -28,21 +28,9 @@ let initialState = {
     ],
     selectOptionBikeArray: [],
 
-    reserveBikeArray: [],
-
-    miniArray: [],
-    problemArray: [],
-
-    element: "",
-
-    reserveArray: [],
-    reserveId: 1,
-
-    spareArray: "road",
-    spareId: 1,
     canReturnBike: [],
+    availableBikes: [],
     itemsCanReturnBike: [],
-    reserveCanReturnBike: [],
 
     bikes: [
         {
@@ -131,34 +119,6 @@ let initialState = {
 }
 initialState.renderOptionsFn()
 
-let pushOptionsFn = (c) => {
-    c.bikeArray.map(el => {
-        c.selectOptionBikeArray.push(<option value={String(el)}>{el}</option>)
-    })
-}
-
-export const buttonClickFn = (c, item) => {
-    console.log("click delete FN  : ", item)
-
-    console.log("initialState.reserveBikeArray  : ", initialState.reserveBikeArray)
-    initialState.reserveBikeArray.push(item) //
-    console.log("initialState.reserveBikeArray: ", initialState.reserveBikeArray)
-    initialState.canReturnBike.forEach((del) => {
-        if (del === item) {
-            initialState.reserveCanReturnBike.push(del)
-        }
-    })
-    initialState.canReturnBike = c.reserveCanReturnBike
-    initialState.reserveCanReturnBike = []
-
-    initialState.selectOptionBikeArray = []
-    initialState.bikeArray = initialState.reserveBikeArray
-    initialState.reserveBikeArray = []
-
-    pushOptionsFn(initialState)
-    console.log(" initialState.selectOptionBikeArray : ", initialState.selectOptionBikeArray)
-
-}
 
 export const bikeReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -187,376 +147,47 @@ export const bikeReducer = (state = initialState, action) => {
 
             return b
         case SUBMIT_CLICK:
-            // if (state.currentBike.bikeAvailable) {
-            console.log("SUBMIT_CLICK")
-            let c = { ...state }
-            c.currentBike = { ...state.currentBike }
-            c.currentBike.bikeAvailable = false
-            c.bikes[state.currentBike.bikeId - 1] = { ...state.bikes[state.currentBike.bikeId - 1] }
-            c.bikes[state.currentBike.bikeId - 1].available = false
+            if (state.currentBike.bikeAvailable) {
+                let c = { ...state }
+                c.currentBike = { ...state.currentBike }
+                c.currentBike.bikeAvailable = false
+                c.bikes[state.currentBike.bikeId - 1] = { ...state.bikes[state.currentBike.bikeId - 1] }
+                c.bikes[state.currentBike.bikeId - 1].available = false
 
-            c.variables = { ...state.variables }
-            c.variables.totalCount = state.variables.totalCount + 1
-            c.variables.totalPrice = state.variables.totalPrice + state.currentBike.bikePrice
-            c.variables.availableCount = state.variables.availableCount - 1
+                c.variables = { ...state.variables }
+                c.variables.totalCount = state.variables.totalCount + 1
+                c.variables.totalPrice = state.variables.totalPrice + state.currentBike.bikePrice
+                c.variables.availableCount = state.variables.availableCount - 1
 
+                c.bikeArray = [...state.bikeArray]
+                c.canReturnBike = [...state.canReturnBike]
+                c.availableBikes = [...state.availableBikes]
+                c.availableBikes.push(c.currentBike.bikeId)
 
-            c.bikeArray = [...state.bikeArray]
-            c.reserveBikeArray = [...state.reserveBikeArray]
-            c.canReturnBike = [...state.canReturnBike]
-            c.itemsCanReturnBike = [...state.itemsCanReturnBike]
-            c.selectOptionBikeArray = [...state.selectOptionBikeArray]
-            c.reserveArray = [...state.reserveArray]
-
-            c.reserveCanReturnBike = [...state.reserveCanReturnBike]
-
-
-            state.bikeArray.forEach(item => {
-                if (item !== state.currentBike.bikeSelectName) {
-                    c.reserveBikeArray.push(item)
-
-                } else {
-                    c.canReturnBike.push(
-                        <div>{item + " "}
-                            <button id={item} onClick={() => {
-                                buttonClickFn(c, item)
-                            }} >Delete</button>
-                        </div >)
-                    c.itemsCanReturnBike.push(item)
-                }
-
-            })
-            console.log("c.reserveBikeArray : ", c.reserveBikeArray)
-            console.log("c.canReturnBike : ", c.canReturnBike)
-
-            c.selectOptionBikeArray = []
-            c.bikeArray = c.reserveBikeArray
-            c.reserveBikeArray = []
-
-            pushOptionsFn(c)
-
-
-            return c
-        // } else {
-        //     // alert("this bike is no available !")
-        // }
+                return c
+            } else {
+                alert("this bike is no available !")
+                return state
+            }
         case DELETE_CLICK:
-            console.log("  DELETE_CLICK")
             let d = { ...state }
 
             d.variables = { ...state.variables }
             d.variables.totalCount = state.variables.totalCount - 1
             d.variables.availableCount = state.variables.availableCount + 1
-            // d.variables.totalPrice = state.variables.totalPrice + state.currentBike.bikePrice
+            d.variables.totalPrice = state.variables.totalPrice - state.currentBike.bikePrice
+            d.availableBikes = [...state.availableBikes]
 
-            d.bikeArray = [...state.bikeArray]
-            d.reserveBikeArray = [...state.reserveBikeArray]
+            for (let i = 0; i < d.availableBikes.length; i++) {
+                if (d.availableBikes[i] === action.id) {
+                    d.availableBikes.splice(i, 1)
+                    break
+                }
+            }
 
-            d.canReturnBike = [...state.canReturnBike]
-            d.reserveCanReturnBike = [...state.reserveCanReturnBike]
-            d.itemsCanReturnBike = [...state.itemsCanReturnBike]
-
-            d.selectOptionBikeArray = [...state.selectOptionBikeArray]
-            d.reserveArray = [...state.reserveArray]
-            d.element = { ...state.element }
-
-
-            d.element = state.itemsCanReturnBike[state.itemsCanReturnBike.length - 1]
-            d.bikeArray.push(d.element)
-            d.canReturnBike.pop()
-            d.selectOptionBikeArray = []
-
-            pushOptionsFn(d)
             return d
-
         default: return state
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // c.reserveBikeArray.push(item) //
-    // c.canReturnBike.forEach((del) => {
-    //     if (del === item) {
-    //         c.reserveCanReturnBike.push(del)
-    //     }
-    // })
-    // c.canReturnBike = c.reserveCanReturnBike
-    // c.reserveCanReturnBike = []
-
-
-    // c.bikeArray.map(el => {
-    //     c.selectOptionBikeArray.push(<option value={String(el)}>{el}</option>)
-    // })
-
-    // () => {
-    // console.log("DELETE ID : ", item)
-    // // c.bikeArray.push(item)
-    // c.reserveBikeArray.push(item) //
-    // c.canReturnBike.forEach((del) => {
-    //     if (del === item) {
-    //         c.reserveCanReturnBike.push(del)
-    //     }
-    // })
-    // c.canReturnBike = c.reserveCanReturnBike
-    // c.reserveCanReturnBike = []
-    // 
-    // console.log("c.bikeArray : ", c.bikeArray)
-    // console.log("canReturnBike : ", c.canReturnBike)
-    // console.log("canReturnBike : ", c.canReturnBike)
-    // console.log("canReturnBike : ", c.canReturnBike)
-    // }
-
-
-
-
-    // case MAP_BIKE_ARRAY:
-    // 
-    // let a = { ...state }
-    // a.bikeArray = [...state.bikeArray]
-    // a.selectBikeArray2 = [...state.selectBikeArray2]
-    //
-    // state.bikeArray.map(el => {
-    //     a.selectBikeArray2.push(<option value={String(el)}>{el}</option>)
-    // })
-    // a.selectBikeArray2.push(state.bikeArray.map((item, index) => {
-    //     // <option value={String(item)}>{item}</option>
-    //     return item
-    // })
-    // )
-    // console.log("bikeArray : ", state.bikeArray)
-    // console.log("selectBikeArray2 : ", a.selectBikeArray2)
-    // return a
-
-
-
-    // selectBikeArray: [
-    //     <option id={1} value={String("Road")}>{"Road"}</option>,
-    //     <option id={2} value={String("Mountain")}>{"Mountain"}</option>,
-    //     <option id={3} value={String("Touring")}>{"Touring"}</option>,
-    //     <option id={4} value={String("Folding")}>{"Folding"}</option>,
-    //     <option id={5} value={String("Fixed")}>{"Fixed"}</option>,
-    //     <option id={6} value={String("BMX")}>{"BMX"}</option>,
-    //     <option id={7} value={String("Recumbent")}>{"Recumbent"}</option>,
-    //     <option id={8} value={String("Cruiser")}>{"Cruiser"}</option>,
-    //     <option id={9} value={String("Hybrid")}>{"Hybrid"}</option>,
-    //     <option id={10} value={String("Cycle")}>{"Cycle"}</option>,
-    //     <option id={11} value={String("Electric")}>{"Electric"}</option>,
-    // ],
-
-
-
-
-
-    // function: () => {
-    //     let localArray = []
-    //     initialState.bikeArray.map((item, index) => {
-    //         localArray.push(item)
-    //     })
-    //     console.log("localArray : ", localArray)
-    //     return localArray
-    // },
-
-    // initialState.privet = privet
-    // let funcForEach = () => {
-    //     let localArray = []
-    //     initialState.bikeArray.map((item, index) => {
-    //         localArray.push(item)
-    //     })
-    //     console.log("localArray : ", localArray)
-    //     return localArray
-    // }
-    // let resultFunc = funcForEach()
-    // console.log("resultFunc : ", resultFunc)
-
-
-
-    // return {
-    //     ...state,
-    //      ...state.currentBike,
-    //     bikeAvailable: false,
-    //     ...state.bikes[state.currentBike.bikeId - 1],
-    //     available: false,
-    //     ...state.variables,
-    //     totalCount: state.variables.totalCount + 1,
-    //     totalPrice: state.variables.totalPrice + state.currentBike.bikePrice,
-    //     availableCount: state.variables.availableCount - 1,
-    // }
-
-
-
-
-
-
-
-    // let y = 0
-    // for (let i = 0; i < state.bikes.length; i++) {
-    //     y = i
-    //     console.log(" i >>>", i, "y", y)
-    //     if (getValue === state.bikes[i].selectName) {
-    //         // console.log("true")
-    //         // console.log("getValue", getValue)
-    //         // console.log("state.bikes[i].selectName", state.bikes[i].selectName)
-    //         // console.log("state.bikes[i = 6].name  : ", state.bikes[6].selectName)
-    //         // return { ...state, nameBike: state.bikes[5].name, now: "hyi" }
-    //     }
-    //     // console.log("y end   AAAAA: ")
-    //     // console.log("y end : ", y)
-    //     // return y
-    // }
-    // 
-    // console.log("for end  : ")
-    // console.log("y 3 : ", y)
-    // return {
-    //     ...state, nameBike: state.bikes[y].name
-    // }
-    // return { ...state, nameBike: "lol" }
-    // a = { ...state }
-
-
-
-
-
-    // let arrayState = Object.keys(state.bikes)
-    // console.log("arrayState : ", arrayState)
-    // 
-    // for (let i = 0; i < arrayState.length; i++) {
-    //     if (getValue === arrayState[i]) {
-    //         return {
-    //             ...state, nameBike: state.bikes[arrayState[i]].name
-    //         }
-    //     }
-    // }
-    // let rrr = state.bikes
-    // console.log("state.bike : ", state.bikes)
-
-
-
-
-
-
-
-
-
-    // switch (action.type) {
-    //     case SUBMIT_CLICK:
-    //         return { ...state }
-    //     // , now: state.BMX
-    //     case CLICK_SELECTOR:
-    //         // let select = document.getElementById("select");
-    //         // let getValue = select.value;
-    //         // console.log(getValue);
-    //         return { ...state, }
-    //     // currentBike: getValue 
-    //     default: return state
-    // }
 }
 
 
-// let obj2 = {
-//     name: "ivan",
-//     id: 3,
-//     ves: "50kg",
-// }
-
-// let masivObj = Object.keys(obj2)
-
-// masivObj.forEach
-
-
-
-    // RoadBike: "Road Bike",
-    // TouringBike: "Touring Bike",
-    // FoldingBike: "Folding Bike",
-    // Fixed: "Fixed Gear/ Track Bike",
-    // BMX: "BMX",
-    // RecumbentBike: "Recumbent Bike",
-    // Cruiser: "Cruiser",
-    // HybridBike: "Hybrid Bike",
-    // CycleCrossBike: "Cycle cross Bike",
-    // ElectricBike: "Electric Bike",
-
-
-
-// export const roadActionCreator = () => ({
-//     type: Road
-// })
-// export const mountainActionCreator = () => ({
-//     type: Mountain
-// })
-// export const bmxActionCreator = () => ({
-//     type: BMX
-// })
-// export const fixedActionCreator = () => ({
-//     type: Fixed
-// })
-// export const electricActionCreator = () => ({
-//     type: Electric
-// })
-
-
-
-
-
-
-
-        //     return "hello"
-        // case Mountain:
-        //     return "hello"
-        // case Mountain:
-        //     return "hello"
-        // case Mountain:
-        //     return "hello"
-        // case Mountain:
-        //     return "hello"
-        // case Mountain:
-        //     return "hello"
-        // case Mountain:
-        //     return "hello"
-
-
-
-
-
-
-
-
-
-    // < option > Mountain Bike</option>
-    //         <option>Road Bike</option>
-    //         <option>Touring Bike</option>
-    //         <option>Folding Bike</option>
-    //         <option>Fixed Gear/ Track Bike</option>
-    //         <option>BMX </option>
-    //         <option>Recumbent Bike </option>
-    //         <option> Cruiser </option>
-    //         <option>Hybrid Bike </option>
-    //         <option>Cyclocross Bike </option>
-    //         <option>Electric Bike </option>

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { deleteClickAC, mapBikeArrayAC, selectorAC, submitAC } from "../redux/BikeActionCreator/bikeActionCreator";
-import { buttonClickFn } from "../reducers/BikeReducers/bikeReducer";
+import { deleteClickAC, selectorAC, submitAC } from "../redux/BikeActionCreator/bikeActionCreator";
+
 
 const Bike = (props) => {
     return <div>
@@ -26,14 +26,28 @@ const Bike = (props) => {
             <div className='select q'>
                 <button onClick={props.clickSubmit} >Submit</button>
             </div>
-
-            <div className='select q'>
-                <button onClick={props.clickDelete} >Delete</button>
-            </div>
         </div>
 
-        <div> 1. You can Return Bike  :   {props.canReturnBike}</div>
+        <div> 1. You can Return Bike  :
 
+
+            {
+                props.bikes
+                    .filter((b) => (
+                        props.availableBikes.find((ab) => ab === b.id)
+                    ))
+                    .map((element) => (
+                        < div >
+                            <span>{element.name}</span>
+                            < button onClick={() => {
+                                let id = element.id
+                                props.clickDelete(id)
+                            }}> Delete </button>
+                        </div>
+                    ))
+            }
+
+        </div >
         {
             (props.totalCount === 0) ? <p>You have no rented bicycles</p>
                 : <p>You have {props.totalCount} rented bike . Yor rent (Total : ${props.totalPrice})</p>
@@ -43,17 +57,14 @@ const Bike = (props) => {
             (props.availableCount) ? <p>Available bicycles ({props.availableCount})</p>
                 : <p> There are no available bicycles</p>
         }
-
-
-    </div>
+    </div >
 }
 let mapStateToProps = (state) => {
-    // debugger
-    // console.log("value : ", state.variables.value)
     let v = state.BikePage.variables
     let c = state.BikePage.currentBike
     let page = state.BikePage
     return {
+        availableBikes: page.availableBikes,
         selectOptionBikeArray: page.selectOptionBikeArray,
         spareArray: page.spareArray,
         spareId: page.spareId,
@@ -69,7 +80,7 @@ let mapStateToProps = (state) => {
         totalCount: v.totalCount,
         totalPrice: v.totalPrice,
         availableCount: v.availableCount,
-
+        bikes: page.bikes,
         bikeId: c.bikeId,
         bikeAvailable: c.bikeAvailable,
         bikeSelectName: c.bikeSelectName,
@@ -86,15 +97,12 @@ let mapDispatchToProps = (dispatch) => {
         clickSelect: () => {
             dispatch(selectorAC())
         },
-        // buttonClickFn: () => {
-        //     dispatch(deleteClickAC())
-        // },
-        clickDelete: () => {
-            dispatch(deleteClickAC())
-        }
+        clickDelete: (id) => {
+            dispatch(deleteClickAC(id))
+        },
+
     }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Bike)
 
@@ -107,6 +115,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(Bike)
 
 
 
+{/* 
+            {
+                props.bikes.filter((b) => (
+                    props.availableBikes.find((ab) => ab === b.id)
+                )).length
+            } */}
 
 
 
@@ -122,45 +136,3 @@ export default connect(mapStateToProps, mapDispatchToProps)(Bike)
 
 
 
-
-
-
-
-
-
-// mapBikeArray: () => {
-//     dispatch(mapBikeArrayAC())
-// },
-
-
-{/* <div> selectBikeArray :    {props.selectBikeArray}</div> */ }
-{/* <div>  miniArray :    {props.miniArray}</div>
-        <div>  bikeArray :    {props.bikeArray}</div>
-        <div>  problemArray :    {props.problemArray}</div> */}
-{/* <p>hyi</p>
-        <div>  bikeAvailable  :   {props.bikeAvailable}</div>
-        <div>  bikeName  :   {props.bikeName}</div>
-        <div>  bikePrice  :   {props.bikePrice}</div> */}
-
-
-{/* {
-                        <select onClick={props.clickSelect} id="select">
-                            {bikeArray.map((item, index) => {
-                                return <option value={String(item)}>{item}</option>
-                            })}
-                        </select>
-                    } */}
-
-{/* {
-                        bikeArray.map((item, index) => {
-                            return <option value={String(item)}>{item}</option>
-                        })
-                    } */}
-{/* <div>
-                <button onClick={props.mapBikeArray} >ClickMap</button>
-            </div> */}
-
-// let bikeArray = [
-//     "Road", "Mountain", "Touring", "Folding", "Fixed", "BMX",
-//     "Recumbent", "Cruiser", "Hybrid", "Cycle", "Electric",
-// ]
